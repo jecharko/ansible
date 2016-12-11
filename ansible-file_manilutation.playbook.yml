@@ -1,0 +1,74 @@
+---
+- name: Dateimanipulationen
+  hosts: TEST-JK
+  vars:
+     path: /tmp/ansible-test/
+     file: test.conf
+  become: yes #root werden ;-)
+  tasks:
+  - name: Ordner anlegen
+    file:
+      path: "{{ path }}"
+      state: directory
+      mode: 0755
+
+  - name: Datei erzeugen
+    file:
+      path: "{{ path }}{{ file }}"
+      state: touch
+      owner: root
+      group: root
+      mode: 0644
+
+  - name: Dateimanipulation - Datei Einträge 1 von 4 (option:value)
+  # "option" werden immer durch "value" überschrieben (Suche und Ersetzen)
+    ini_file:
+      dest: "{{ path }}{{ file }}"
+      section: drinks
+      option: fav1
+      value: coca cola
+      mode: 0644
+      backup: yes
+
+  - name: Dateimanipulation - Datei Einträge 2 von 4 (option:value)
+    ini_file:
+      dest: "{{ path }}{{ file }}"
+      section: drinks
+      option: fav2
+      value: pepsi cola
+      mode: 0644
+      backup: yes
+
+  - name: Dateimanipulation - Datei Einträge 3 von 4 (option:value)
+    ini_file:
+      dest: "{{ path }}{{ file }}"
+      section: drinks
+      option: fav3
+      value: fritz cola
+      mode: 0644
+      backup: yes
+
+  - name: Dateimanipulation - Datei Einträge 4 von 4 (einfaches ergänzen)
+    blockinfile:
+      dest: "{{ path }}{{ file }}"
+      marker: "#<!-- {mark} ANSIBLE MANAGED BLOCK -->"
+      content: |
+        # was immmer
+        # noch mehr blödsinn
+      backup: yes
+
+  - name: Dateimanipulation - Suchen und Ersetzen (regex)
+  # Suche nach regex und ersetzen
+    lineinfile:
+      dest: "{{ path }}{{ file }}"
+      regexp: "coca cola"
+      line: "fav1 = wasser"
+      backup: yes
+
+  - name: Dateimanipulation - Suchen und Ergänzen
+  # Suche "String" und ergänze (in diesem Fall nache gefundenem Eintrag)
+    blockinfile:
+      dest: "{{ path }}{{ file }}"
+      insertbefore: "<!-- BEGIN ANSIBLE MANAGED BLOCK -->"
+      content: "# Neue Manipulation"
+      backup: yesgggzzˇΩΩZΩΩΩ
