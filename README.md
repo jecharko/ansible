@@ -1,2 +1,2 @@
 # ansible
-ansible playbook task snippet ASO
+ansible playbook task snippet etc
