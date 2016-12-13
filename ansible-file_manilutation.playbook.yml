@@ -71,4 +71,4 @@
       dest: "{{ path }}{{ file }}"
       insertbefore: "<!-- BEGIN ANSIBLE MANAGED BLOCK -->"
       content: "# Neue Manipulation"
-      backup: yesgggzzˇΩΩZΩΩΩ
+      backup: yes
